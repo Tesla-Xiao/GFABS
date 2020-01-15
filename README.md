@@ -13,7 +13,7 @@
 
 # Usage
 
-   - [x] [GFABS-manual](https://github.com/Tesla-Xiao/GFABS/inst/GFABS-manual.pdf) ------------ Details of the usage of the package.
+   - [x] [GFABS-manual](https://github.com/Tesla-Xiao/GFABS/blob/master/inst/GFABS-manual.pdf) ------------ Details of the usage of the package.
    
 # Example
 
