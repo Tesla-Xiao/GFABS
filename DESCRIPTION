@@ -1,0 +1,18 @@
+Package: GFABS
+Type: Package
+Title: GFABS
+Version: 0.1.0
+Authors@R: c(person(given = "Xiao", family = "Zhang", role = c("aut","cre"), email = "zhangxiao_0422@163.com"),
+             person(given = "Xu", family = "Liu", role = "aut"),
+             person(given = "Xingjie", family = "Shi", role = "aut"))
+Author: Xiao Zhang [aut,cre], 
+        Xu Liu [aut],
+        Xingjie Shi [aut]
+Maintainer: Xiao Zhang <zhangxiao_0422@163.com>
+Description: Variable selection for high dimensional varying coefficient smoothed partial rank estimator. The B-splines are used to approximate varying coefficient function. Group Lasso penalty is used to generate a sparse solution. 
+License: GPL (>= 2)
+Imports: splines, Matrix
+Repository: github
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
