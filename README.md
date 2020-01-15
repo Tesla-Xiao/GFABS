@@ -13,27 +13,22 @@
 
 # Usage
 
-   - [x] [GFabs-manual](https://github.com/Tesla-Xiao/GFABS/blob/master/inst/GFabs-manual.pdf) ------------ Details of the usage of the package.
+   - [x] [GFABS-manual](https://github.com/Tesla-Xiao/GFABS/inst/GFABS-manual.pdf) ------------ Details of the usage of the package.
    
 # Example
 
-    library(GFabs)
+    library(GFABS)
 
-    n = 100
-    p = 100
-    sigma = outer(1:p, 1:p, FUN = function(x, y) 0.3^(abs(x - y)))
-    x = rmvnorm(n, mean = rep(0,p), sigma = sigma)
-    u = runif(100)
-    b = cbind(5*sin(2*pi*u), 5*cos(2*pi*u), 5*exp(2*u-1)-5, 5, -5, matrix(0, nrow=n, ncol=p-5))
-    eta = x %*% b
-    e = c(0.7*rnorm(n)+0.3*rcauchy(n))
-    g = function(x) x
-    y = g(eta + e)
-    fit <- hvcspr(y, x, u)
+    W = matrix(rnorm(80), 20, 4)
+    b = c(5, 5, -5, -5)
+    e = c(0.7*rnorm(20)+0.3*rcauchy(20))
+    y = W %*% b + e
+    group <- c(1, 1, 2, 2)
+    fit <- GFabs(W, y, group)
     
 # References
 
 Model Selection for Transformation Model with High Dimensional Varying Coefficients. Manuscript.
 
 # Development
-The R-package is developed by Xiao Zhang (zhangxiao_0422@163.com) and Xingjie.
+The R-package is developed by Xiao Zhang (zhangxiao_0422@163.com) and Xingjie Shi.
