@@ -71,7 +71,7 @@ GFabs = function(W, y, group, status=NULL, sigma=NULL, weight=NULL,
   if (model == "spr") model = 2
   if (type == "L2") type = 2
 
-  fit <- .Call(GFabs:::"BIC_grpFabs",
+  fit <- .Call(GFABS:::"BIC_grpFabs",
                as.numeric(t(W.std)),
                as.numeric(y.std),
                as.numeric(weight),
