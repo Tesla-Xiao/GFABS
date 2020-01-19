@@ -1,4 +1,4 @@
-# GFABS
+# GFabs
   A Group Forward and Backward Stagewise (GFabs) algorithm for smoothed partial rank loss function (SPR) with the Group Lasso penalty.
  
   GFabs uses coordinate descent with a fixed step size which consists of both forward and backward steps. At each step, the first-order Taylor's expansion is used to reflect the main part of the increment. 
@@ -17,7 +17,7 @@
    
 # Example
 
-    library(GFABS)
+    library(GFabs)
 
     W = matrix(rnorm(80), 20, 4)
     b = c(5, 5, -5, -5)
