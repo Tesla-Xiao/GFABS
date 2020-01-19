@@ -5,5 +5,5 @@
 src/*.o
 src/*.so
 src/*.dll
-.Rbuildignore
+*.Rbuildignore
 *.Rproj
