@@ -1,6 +1,6 @@
 Package: GFabs
 Type: Package
-Title: GFABS
+Title: GFabs
 Version: 0.1.0
 Authors@R: c(person(given = "Xiao", family = "Zhang", role = c("aut","cre"), email = "zhangxiao_0422@163.com"),
              person(given = "Xu", family = "Liu", role = "aut"),
