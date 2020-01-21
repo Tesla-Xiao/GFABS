@@ -94,13 +94,13 @@ GFabs = function(W, y, group, status=NULL, sigma=NULL, weight=NULL,
   # unstandardization
   K1    = cumsum(tabulate(group))
   K0    = c(1, K1[-length(K1)]+1)
-  beta = matrix(0, nrow=nrow(beta), ncol=ncol(beta))
+  Beta = matrix(0, nrow=nrow(beta), ncol=ncol(beta))
   for (i in 1:length(K0)) {
     idx = c(K0[i]:K1[i])
-    beta[idx,] = scale[[i]] %*% beta[idx,]
+    Beta[idx,] = scale[[i]] %*% beta[idx,]
   }
-
-  val = list(beta      = beta,
+  
+  val = list(beta      = Beta,
              lambda    = fit$lambda,
              direction = fit$direction,
              active    = fit$active,
