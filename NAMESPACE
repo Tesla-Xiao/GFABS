@@ -1,0 +1,6 @@
+import('splines')  
+import('Matrix') 
+useDynLib(GFabs, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+
+export(GFabs, GFabs_vc)
