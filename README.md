@@ -9,11 +9,11 @@
     #install.packages("devtools")
     #install.packages("Rcpp")
     library(devtools)
-    install_github("Tesla-Xiao/GFabs")
+    install_github("XiaoZhangryy/GFabs")
 
 # Usage
 
-   - [x] [GFabs-manual](https://github.com/Tesla-Xiao/GFabs/blob/master/inst/GFabs-manual.pdf) ------------ Details of the usage of the package.
+   - [x] [GFabs-manual](https://github.com/XiaoZhangryy/GFabs/blob/master/inst/GFabs-manual.pdf) ------------ Details of the usage of the package.
    
 # Example
 
