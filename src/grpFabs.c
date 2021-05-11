@@ -96,7 +96,7 @@ int *status, *param;
 {
 	int i, j, k;
 	int n = param[0], p = param[1]; 
-    double  xb[n], temp;
+    double  xb[n], temp, theta = 0.0;
     
     // derivative doesn't need initial value
     for (i = 0; i < p; ++i) derivative[i] = 0.0;
@@ -106,10 +106,6 @@ int *status, *param;
     	for (j = 0; j < p; ++j)
     		xb[i] += x[i*p + j]* b[j];
     }
-
-    double theta = 0.0;
-
-    for (i = 0; i < p; ++i) derivative[i] = 0.0;
 
     for (i = n-1; i >= 0; --i) {
         theta += exp(xb[i]);
