@@ -73,6 +73,13 @@ GFabs_vc = function(X, y, u, status=NULL, sigma=NULL, weight=NULL, bs.df = 5, bs
   if (is.null(sigma))           sigma = 1/sqrt(n)
   if (is.null(lambda.min)) lambda.min = {if (n > p) 1e-4 else .02}
   if (is.null(weight))         weight = sqrt(K)
+  
+  if (model == "cox") {
+    y.order = order(y)
+    W.std   = W.std[y.order, ]
+    y.std   = y[y.order]
+    status  = status[y.order]
+  }
 
   #if (type == "L2") type = 2
   type = 2

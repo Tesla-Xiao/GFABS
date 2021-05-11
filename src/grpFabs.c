@@ -73,7 +73,7 @@ double coxloss(double *y, double *x, double *b, int *status, int *param)
 {
 	int i, j; 
 	int n = param[0], p = param[1]; 
-    double c[n], d[n], loss;
+    double c[n], loss = 0.0;
     
     for (i = 0; i < n; ++i){
     	c[i] = 0;
@@ -81,22 +81,13 @@ double coxloss(double *y, double *x, double *b, int *status, int *param)
     		c[i] += x[i*p + j]* b[j];
     }
 
-    for (i = 0; i < n; ++i) d[i] = 0.0;
-    for (i = 0; i < n; ++i) {
-    	for (j = i+1; j < n; ++j) {
-    		if (y[j] > y[i]) d[i] += exp(c[j]-c[i]);
-    		else if (y[j] < y[i]) d[j] += exp(c[i]-c[j]);
-    		else {
-    			d[i] += exp(c[j]-c[i]);
-    			d[j] += exp(c[i]-c[j]);
-    		}
-    	}
+    double temp = 0.0;
+    for (i = n-1; i >= 0; --i){
+        temp += exp(c[i]);
+        if (status[i]) loss -= c[i] - log(temp);
     }
 
-    loss = 0.0;
-    for (i = 0; i < n; ++i) loss -= status[i] * log(d[i]);
-
-    return -2.0*loss/n;
+    return loss;
 }
 
 void dcox(y, x, b, status, param, derivative)
@@ -105,41 +96,32 @@ int *status, *param;
 {
 	int i, j, k;
 	int n = param[0], p = param[1]; 
-    double  c[n], d[n];
+    double  xb[n], temp;
     
     // derivative doesn't need initial value
     for (i = 0; i < p; ++i) derivative[i] = 0.0;
 
     for (i = 0; i < n; ++i){
-    	c[i] = 0;
+    	xb[i] = 0;
     	for (j = 0; j < p; ++j)
-    		c[i] += x[i*p + j]* b[j];
+    		xb[i] += x[i*p + j]* b[j];
     }
 
-    for (i = 0; i < n; ++i) d[i] = 0.0;
-    for (i = 0; i < n; ++i) {
-    	for (j = i+1; j < n; ++j) {
-    		if (y[j] > y[i]) d[i] += exp(c[j]);
-    		else if (y[j] < y[i]) d[j] += exp(c[i]);
-    		else {
-    			d[i] += exp(c[j]);
-    			d[j] += exp(c[i]);
-    		}
-    	}
-    }
+    double theta = 0.0;
 
-    for (i=0; i<n; i++){
-    	if (status[i] == 0) continue;
-    	for (j=0; j<n; j++){
-    		if (y[j] >= y[i]) {
-    			for (k=0; k<p; k++)
-    				derivative[k] += exp(c[j]) / d[i] * (x[i*p+k] - x[j*p+k]);
-    		}
-    	}
-    }
+    for (i = 0; i < p; ++i) derivative[i] = 0.0;
 
-    for (k=0; k<p; k++)
-    	derivative[k] *= -2.0/n;
+    for (i = n-1; i >= 0; --i) {
+        theta += exp(xb[i]);
+        if (status[i]) {
+            for (j = i; j < n; ++j) {
+                temp = exp(xb[j])/theta;
+                for (k = 0; k < p; ++k) {
+                    derivative[k] -= temp * (x[i*p+k]-x[j*p+k]);
+                }
+            }
+        }
+    }
 }
 
 /*logisticloss
@@ -392,6 +374,8 @@ int *status, *set, *sum_status, *param, model, vc;
     	return log(score) - count * log(sum_status[0])/2/n;
     } else if (model == 4) {
     	return -log(score) - count * log(n)/2/n;
+    } else {
+    	return -log(score) - count * log(n)/2/n;
     }
 }
 
@@ -611,6 +595,8 @@ SEXP BIC_grpFabs(SEXP X, SEXP Y, SEXP Weight, SEXP Status, SEXP K0, SEXP K1, SEX
 	} else if (strcmp(modeltype, "logistic") == 0)
 	{
 		model = 4;
+	} else {
+		model = 1;
 	}
 
 	x      = REAL(X);
@@ -652,6 +638,8 @@ SEXP BIC_grpFabs(SEXP X, SEXP Y, SEXP Weight, SEXP Status, SEXP K0, SEXP K1, SEX
 	for (i = 0; i < iter*p; ++i) beta[i] = 0.0;
 	
 	k = derivativeInitial(x, y, b0, w, status, k0, k1, model, sigma, type, param, d);
+    
+    
 
 	normb = mynorm(d, k0[k], k1[k], type);
 	for (i = k0[k]; i <= k1[k]; ++i)
