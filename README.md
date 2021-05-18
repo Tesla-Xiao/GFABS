@@ -28,6 +28,10 @@
     y     = rowSums(x * b) + error
     fit   <- GFabs_vc(x, y, u)
     
+# Replicate simulation results in Zhang et al.(2021)
+
+All the simulation results can be reproduced by using the code at [simulation](https://github.com/XiaoZhangryy/GFabs/blob/master/simulations). 
+
 # References
 
 Model Selection for Transformation Model with High Dimensional Varying Coefficients. Manuscript.

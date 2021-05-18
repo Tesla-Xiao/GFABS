@@ -12,12 +12,8 @@ library(survival)
 library(Matrix)
 library(splines) 
 library(grpreg)
-source("standard.r") 
-source("bic_grpFabs.r")
-source("hvcspr.r")
+library(GFabs)
 source("hvcsurv.r")
-#dyn.load("grpFabs.dll")
-dyn.load("grpFabs.so")
 
 # generate data =============================================================
 assig = function(n_args) {
@@ -26,14 +22,6 @@ assig = function(n_args) {
   for(i in 1:length(n_args)) cargs[[i]] = 1:n_args[i]
   # expand.grid: Create a data frame from all combinations of the supplied vectors or factors
   t(expand.grid(cargs))
-}
-
-
-myAUC <- function(XBeta, y)
-{
-  AUC.k = cor( y, XBeta, method = "kendall")
-  
-  AUC.k
 }
 
 generator = function(n, p, rho, error, tran, censor.rate = NULL) {
@@ -123,11 +111,12 @@ main <- function(number) {
     n_eps     <- length(eps)
     fit <- vector("list", n_eps+1)
     for (i in 1:n_eps) {
-      fit[[i]] <- hvcspr(y, x, u, status, bs.df, bs.degree, eps[i], NULL, NULL, "spr", "bic")
+      fit[[i]] <- GFabs_vc(x, y, u, status=status, bs.df=bs.df, bs.degree=bs.degree,
+        model="spr", eps=eps[i])
       fit[[i]]$XBeta <- rowSums(x * fit[[i]]$Beta)
       fit[[i]]$AUC = myAUC(fit[[i]]$XBeta, y)
       fit[[i]]$testing_XBeta <- rowSums(testing_W %*% fit[[i]]$theta[,fit[[i]]$optimal])
-      fit[[i]]$testing_AUC = myAUC(fit[[i]]$testing_XBeta, testing_dat$y)
+      fit[[i]]$testing_AUC = cor( testing_dat$y, fit[[i]]$testing_XBeta, method = "kendall")
     }
     # cox
     i = i+1
@@ -135,8 +124,7 @@ main <- function(number) {
     fit[[i]]$XBeta <- rowSums(x * fit[[i]]$Beta)
     fit[[i]]$AUC = myAUC(fit[[i]]$XBeta, y)
     fit[[i]]$testing_XBeta <- rowSums(testing_W %*% fit[[i]]$theta[,fit[[i]]$optimal])
-    fit[[i]]$testing_AUC = myAUC(fit[[i]]$testing_XBeta, testing_dat$y)
-    
+    fit[[i]]$testing_AUC = cor( testing_dat$y, fit[[i]]$testing_XBeta, method = "kendall")
     
     print(loops)
     

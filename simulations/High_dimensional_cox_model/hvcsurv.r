@@ -24,7 +24,6 @@ grpreg <- function(y, x, u, status, bs.df, bs.degree, lambda.min = NULL) {
       Beta[, i] <- phi %*% beta[((i-1)*q+1):(i*q), opt, drop=F]
   }
   
-  
   val <- list(lambda     = lambda,
               theta      = beta,
               loss       = loss,
